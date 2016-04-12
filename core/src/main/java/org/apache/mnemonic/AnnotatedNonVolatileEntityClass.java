@@ -345,22 +345,30 @@ public class AnnotatedNonVolatileEntityClass {
     String ret = null;
     if (isUnboxPrimitive(tname)) {
       TypeName tn = unboxTypeName(tname);
-      if (tn.equals(TypeName.BOOLEAN))
+      if (tn.equals(TypeName.BOOLEAN)) {
         ret = isget ? "getByte" : "putByte";
-      if (tn.equals(TypeName.BYTE))
+      }
+      if (tn.equals(TypeName.BYTE)) {
         ret = isget ? "getByte" : "putByte";
-      if (tn.equals(TypeName.CHAR))
+      }
+      if (tn.equals(TypeName.CHAR)) {
         ret = isget ? "getChar" : "putChar";
-      if (tn.equals(TypeName.DOUBLE))
+      }
+      if (tn.equals(TypeName.DOUBLE)) {
         ret = isget ? "getDouble" : "putDouble";
-      if (tn.equals(TypeName.FLOAT))
+      }
+      if (tn.equals(TypeName.FLOAT)) {
         ret = isget ? "getFloat" : "putFloat";
-      if (tn.equals(TypeName.INT))
+      }
+      if (tn.equals(TypeName.INT)) {
         ret = isget ? "getInt" : "putInt";
-      if (tn.equals(TypeName.LONG))
+      }
+      if (tn.equals(TypeName.LONG)) {
         ret = isget ? "getLong" : "putLong";
-      if (tn.equals(TypeName.SHORT))
+      }
+      if (tn.equals(TypeName.SHORT)) {
         ret = isget ? "getShort" : "putShort";
+      }
     } else {
       ret = isget ? "getAddress" : "putAddress";
     }
@@ -888,8 +896,9 @@ public class AnnotatedNonVolatileEntityClass {
     methodBuilder.addAnnotation(Override.class);
     for (AnnotationMirror mirror : method.getAnnotationMirrors()) {
       AnnotationSpec annotationSpec = AnnotationSpec.get(mirror);
-      if (annotationSpec.type.equals(Override.class))
+      if (annotationSpec.type.equals(Override.class)) {
         continue;
+      }
       methodBuilder.addAnnotation(annotationSpec);
     }
 
