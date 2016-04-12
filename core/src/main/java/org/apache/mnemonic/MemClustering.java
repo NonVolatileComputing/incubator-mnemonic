@@ -17,7 +17,11 @@
 
 package org.apache.mnemonic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * clustering different kind of memory-like media and combine them as a larger

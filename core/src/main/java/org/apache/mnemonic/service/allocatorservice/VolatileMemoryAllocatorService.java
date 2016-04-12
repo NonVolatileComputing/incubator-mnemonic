@@ -17,7 +17,6 @@
 
 package org.apache.mnemonic.service.allocatorservice;
 
-import org.flowcomputing.commons.primitives.*;
 import java.nio.ByteBuffer;
 
 public interface VolatileMemoryAllocatorService {
