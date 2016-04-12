@@ -444,7 +444,7 @@ public class AnnotatedNonVolatileEntityClass {
     for (String name : m_gettersinfo.keySet()) {
       dynfieldinfo = m_dynfieldsinfo.get(name);
       if (dynfieldinfo.id > 0) {
-        finfo.add(new long[] { dynfieldinfo.id, dynfieldinfo.fieldoff, dynfieldinfo.fieldsize });
+        finfo.add(new long[]{dynfieldinfo.id, dynfieldinfo.fieldoff, dynfieldinfo.fieldsize});
       }
     }
 
