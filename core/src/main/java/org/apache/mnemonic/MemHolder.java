@@ -17,7 +17,7 @@
 
 package org.apache.mnemonic;
 
-import org.flowcomputing.commons.resgc.ResHolder;
+import org.flowcomputing.commons.resgc.*;
 
 /**
  * hold a memory kind of resource.
@@ -25,7 +25,7 @@ import org.flowcomputing.commons.resgc.ResHolder;
  */
 public abstract class MemHolder<A extends CommonAllocator<A>, T, H extends MemHolder<A, T, H>> extends ResHolder<T, H> {
 
-  protected A mAllocator;
+  protected A m_allocator;
 
   /**
    * Constructor: initialize with resource.
@@ -39,7 +39,7 @@ public abstract class MemHolder<A extends CommonAllocator<A>, T, H extends MemHo
    */
   public MemHolder(T mres, A ar) {
     super(mres);
-    mAllocator = ar;
+    m_allocator = ar;
   }
 
   /**
@@ -48,7 +48,7 @@ public abstract class MemHolder<A extends CommonAllocator<A>, T, H extends MemHo
    * @return the allocator
    */
   public A getAllocator() {
-    return mAllocator;
+    return m_allocator;
   }
 
   /**
@@ -57,19 +57,19 @@ public abstract class MemHolder<A extends CommonAllocator<A>, T, H extends MemHo
    * @param size
    *          specify the new size for its held resource
    */
-  public abstract MemHolder<A, T, H> resize(long size);
+  abstract public MemHolder<A, T, H> resize(long size);
 
   /**
    * get the size of its held memory resource.
    * 
    * @return the size
    */
-  public abstract long getSize();
+  abstract public long getSize();
 
   /**
    * register its held resource for auto-reclaim
    *
    */
-  public abstract void registerAutoReclaim();
+  abstract public void registerAutoReclaim();
 
 }

@@ -57,7 +57,7 @@ public class MemBufferHolder<A extends CommonAllocator<A>> extends MemHolder<A, 
    */
   @Override
   public MemBufferHolder<A> resize(long size) {
-    return mAllocator.resizeBuffer(this, size);
+    return m_allocator.resizeBuffer(this, size);
   }
 
   /**
@@ -66,7 +66,7 @@ public class MemBufferHolder<A extends CommonAllocator<A>> extends MemHolder<A, 
    */
   @Override
   public void registerAutoReclaim() {
-    mAllocator.registerBufferAutoReclaim(this);
+    m_allocator.registerBufferAutoReclaim(this);
   }
 
 }

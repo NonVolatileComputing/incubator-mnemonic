@@ -60,7 +60,7 @@ public class MemChunkHolder<A extends CommonAllocator<A>> extends MemHolder<A, L
    */
   @Override
   public MemChunkHolder<A> resize(long size) {
-    return mAllocator.resizeChunk(this, size);
+    return m_allocator.resizeChunk(this, size);
   }
 
   /**
@@ -69,7 +69,7 @@ public class MemChunkHolder<A extends CommonAllocator<A>> extends MemHolder<A, L
    */
   @Override
   public void registerAutoReclaim() {
-    mAllocator.registerChunkAutoReclaim(this);
+    m_allocator.registerChunkAutoReclaim(this);
   }
 
 }
