@@ -17,9 +17,15 @@
 
 package org.apache.mnemonic.collections;
 
-import org.apache.mnemonic.*;
+import org.apache.mnemonic.Durable;
+import org.apache.mnemonic.EntityFactoryProxy;
+import org.apache.mnemonic.GenericField;
+import org.apache.mnemonic.NonVolatileEntity;
+import org.apache.mnemonic.NonVolatileGetter;
+import org.apache.mnemonic.NonVolatileSetter;
+import org.apache.mnemonic.OutOfPersistentMemory;
+import org.apache.mnemonic.RetrieveNonVolatileEntityError;
 import org.testng.annotations.Test;
-import java.util.List;
 
 /**
  *
@@ -61,27 +67,27 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
   }
 
   @NonVolatileGetter(Id = 1L)
-  abstract public Short getAge();
+  public abstract Short getAge();
 
   @NonVolatileSetter
-  abstract public void setAge(Short age);
+  public abstract void setAge(Short age);
 
   @NonVolatileGetter(Id = 2L)
-  abstract public String getName() throws RetrieveNonVolatileEntityError;
+  public abstract String getName() throws RetrieveNonVolatileEntityError;
 
   @NonVolatileSetter
-  abstract public void setName(String name, boolean destroy)
+  public abstract void setName(String name, boolean destroy)
       throws OutOfPersistentMemory, RetrieveNonVolatileEntityError;
 
   @NonVolatileGetter(Id = 3L)
-  abstract public Person<E> getMother() throws RetrieveNonVolatileEntityError;
+  public abstract Person<E> getMother() throws RetrieveNonVolatileEntityError;
 
   @NonVolatileSetter
-  abstract public void setMother(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
+  public abstract void setMother(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
 
   @NonVolatileGetter(Id = 4L)
-  abstract public Person<E> getFather() throws RetrieveNonVolatileEntityError;
+  public abstract Person<E> getFather() throws RetrieveNonVolatileEntityError;
 
   @NonVolatileSetter
-  abstract public void setFather(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
+  public abstract void setFather(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
 }
