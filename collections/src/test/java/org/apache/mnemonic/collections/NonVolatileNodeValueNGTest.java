@@ -116,7 +116,7 @@ public class NonVolatileNodeValueNGTest {
           GenericField.GType[] gfields, long phandler, boolean autoreclaim) {
         return PersonFactory.restore(allocator, factoryproxys, gfields, phandler, autoreclaim);
       }
-    }};
+    } };
 
     NonVolatileNodeValue<Person<Long>> plln = NonVolatileNodeValueFactory.create(m_act, efproxies, gtypes, false);
     plln.setItem(person, false);
@@ -141,7 +141,7 @@ public class NonVolatileNodeValueNGTest {
           GenericField.GType[] gfields, long phandler, boolean autoreclaim) {
         return PersonFactory.restore(allocator, factoryproxys, gfields, phandler, autoreclaim);
       }
-    }};
+    } };
 
     NonVolatileNodeValue<Person<Long>> firstnv = NonVolatileNodeValueFactory.create(m_act, listefproxies, listgftypes,
         false);
@@ -212,7 +212,7 @@ public class NonVolatileNodeValueNGTest {
         }
         return NonVolatileNodeValueFactory.restore(allocator, val_efproxies, val_gftypes, phandler, autoreclaim);
       }
-    }};
+    } };
 
     NonVolatileNodeValue<NonVolatileNodeValue<Double>> nextnv = null, pre_nextnv = null;
     NonVolatileNodeValue<Double> elem = null, pre_elem = null, first_elem = null;

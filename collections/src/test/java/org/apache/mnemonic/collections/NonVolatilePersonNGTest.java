@@ -24,7 +24,6 @@ import org.apache.mnemonic.RetrieveNonVolatileEntityError;
 import org.apache.mnemonic.Utils;
 import org.testng.annotations.Test;
 import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 

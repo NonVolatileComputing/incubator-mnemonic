@@ -59,10 +59,12 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
 
   public int compareTo(Person<E> anotherPerson) {
     int ret = 0;
-    if (0 == ret)
+    if (0 == ret) {
       ret = getAge().compareTo(anotherPerson.getAge());
-    if (0 == ret)
+    }
+    if (0 == ret) {
       ret = getName().compareTo(anotherPerson.getName());
+    }
     return ret;
   }
 
