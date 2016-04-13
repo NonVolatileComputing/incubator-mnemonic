@@ -85,7 +85,7 @@ public class NonVolatileNodeValueNGTest {
     GenericField.GType gtypes[] = {GenericField.GType.INTEGER};
     NonVolatileNodeValue<Integer> plln = NonVolatileNodeValueFactory.create(m_act, null, gtypes, false);
     plln.setItem(val, false);
-    Long handler = plln.getNonVolatileHandler();
+    Long handler = plln.getHandler();
     System.err.println("-------------Start to Restore Integer -----------");
     NonVolatileNodeValue<Integer> plln2 = NonVolatileNodeValueFactory.restore(m_act, null, gtypes, handler, false);
     AssertJUnit.assertEquals(val, (int) plln2.getItem());
@@ -97,7 +97,7 @@ public class NonVolatileNodeValueNGTest {
     GenericField.GType gtypes[] = {GenericField.GType.STRING};
     NonVolatileNodeValue<String> plln = NonVolatileNodeValueFactory.create(m_act, null, gtypes, false);
     plln.setItem(val, false);
-    Long handler = plln.getNonVolatileHandler();
+    Long handler = plln.getHandler();
     System.err.println("-------------Start to Restore String-----------");
     NonVolatileNodeValue<String> plln2 = NonVolatileNodeValueFactory.restore(m_act, null, gtypes, handler, false);
     AssertJUnit.assertEquals(val, plln2.getItem());
@@ -120,7 +120,7 @@ public class NonVolatileNodeValueNGTest {
 
     NonVolatileNodeValue<Person<Long>> plln = NonVolatileNodeValueFactory.create(m_act, efproxies, gtypes, false);
     plln.setItem(person, false);
-    Long handler = plln.getNonVolatileHandler();
+    Long handler = plln.getHandler();
 
     NonVolatileNodeValue<Person<Long>> plln2 = NonVolatileNodeValueFactory.restore(m_act, efproxies, gtypes, handler,
         false);
@@ -172,7 +172,7 @@ public class NonVolatileNodeValueNGTest {
       iternv = iternv.getNext();
     }
 
-    long handler = firstnv.getNonVolatileHandler();
+    long handler = firstnv.getHandler();
 
     NonVolatileNodeValue<Person<Long>> firstnv2 = NonVolatileNodeValueFactory.restore(m_act, listefproxies, listgftypes,
         handler, false);
@@ -242,7 +242,7 @@ public class NonVolatileNodeValueNGTest {
       nextnv = NonVolatileNodeValueFactory.create(m_act, linkedefproxies, linkedgftypes, false);
       nextnv.setItem(first_elem, false);
       if (null == pre_nextnv) {
-        linkhandler = nextnv.getNonVolatileHandler();
+        linkhandler = nextnv.getHandler();
       } else {
         pre_nextnv.setNext(nextnv, false);
       }

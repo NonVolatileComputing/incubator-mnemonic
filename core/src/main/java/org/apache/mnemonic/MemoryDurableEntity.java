@@ -18,17 +18,19 @@
 package org.apache.mnemonic;
 
 /**
- * this class defines an annotation for setter methods of non-volatile entity
+ *
  *
  */
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface MemoryDurableEntity<ALLOC_PMem3C93D24F59 extends CommonPersistAllocator<ALLOC_PMem3C93D24F59>> {
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.CLASS)
-public @interface NonVolatileSetter {
+  void initializeDurableEntity(ALLOC_PMem3C93D24F59 allocator, EntityFactoryProxy[] efproxys,
+      GenericField.GType[] gfields, boolean autoreclaim);
+
+  void createDurableEntity(ALLOC_PMem3C93D24F59 allocator, EntityFactoryProxy[] efproxys,
+      GenericField.GType[] gfields, boolean autoreclaim) throws OutOfHybridMemory;
+
+  void restoreDurableEntity(ALLOC_PMem3C93D24F59 allocator, EntityFactoryProxy[] efproxys,
+      GenericField.GType[] gfields, long phandler, boolean autoreclaim) throws RetrieveDurableEntityError;
 
 }

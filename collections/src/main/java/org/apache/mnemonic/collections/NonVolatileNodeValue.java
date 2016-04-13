@@ -32,7 +32,7 @@ import org.apache.mnemonic.NonVolatileSetter;
  * unidirectional link
  *
  */
-@NonVolatileEntity
+@DurableEntity
 public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
   protected transient EntityFactoryProxy[] m_node_efproxies;
   protected transient GenericField.GType[] m_node_gftypes;
@@ -77,7 +77,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    *
    * @return the item value of this node
    */
-  @NonVolatileGetter(Id = 1L, EntityFactoryProxies = "m_node_efproxies", GenericFieldTypes = "m_node_gftypes")
+  @DurableGetter(Id = 1L, EntityFactoryProxies = "m_node_efproxies", GenericFieldTypes = "m_node_gftypes")
   public abstract E getItem();
 
   /**
@@ -90,7 +90,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    *          true if want to destroy exist one
    *
    */
-  @NonVolatileSetter
+  @DurableSetter
   public abstract void setItem(E value, boolean destroy);
 
   /**
@@ -99,7 +99,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    * @return the next node
    *
    */
-  @NonVolatileGetter(Id = 2L, EntityFactoryProxies = "m_node_efproxies", GenericFieldTypes = "m_node_gftypes")
+  @DurableGetter(Id = 2L, EntityFactoryProxies = "m_node_efproxies", GenericFieldTypes = "m_node_gftypes")
   public abstract NonVolatileNodeValue<E> getNext();
 
   /**
@@ -111,7 +111,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    * @param destroy
    *          true if want to destroy the exist node
    */
-  @NonVolatileSetter
+  @DurableSetter
   public abstract void setNext(NonVolatileNodeValue<E> next, boolean destroy);
 
   /**

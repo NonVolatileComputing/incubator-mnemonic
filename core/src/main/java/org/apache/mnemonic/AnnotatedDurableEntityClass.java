@@ -82,7 +82,7 @@ public class AnnotatedDurableEntityClass {
   }
 
   protected final String cFACTORYNAMESUFFIX = "Factory";
-  protected final String cPMEMNAMEPREFIX = "NonVolatile_";
+  protected final String cPMEMNAMEPREFIX = "Durable_";
   protected final String cFIELDNAMESUFFIX = String.format("_field_%s", Utils.genRandomString());
   protected final String cALLOCATORFIELDNAME = String.format("alloc_%s", Utils.genRandomString());
   protected final String cAUTORECLAIMFIELDNAME = String.format("autoreclaim_%s", Utils.genRandomString());
@@ -179,14 +179,14 @@ public class AnnotatedDurableEntityClass {
 
     m_durablemtdinfo.put("cancelAutoReclaim", new MethodInfo());
     m_durablemtdinfo.put("registerAutoReclaim", new MethodInfo());
-    m_durablemtdinfo.put("getNonVolatileHandler", new MethodInfo());
+    m_durablemtdinfo.put("getHandler", new MethodInfo());
     m_durablemtdinfo.put("autoReclaim", new MethodInfo());
     m_durablemtdinfo.put("destroy", new MethodInfo());
     m_durablemtdinfo.put("getNativeFieldInfo", new MethodInfo());
 
-    m_entitymtdinfo.put("initializeNonVolatileEntity", new MethodInfo());
-    m_entitymtdinfo.put("createNonVolatileEntity", new MethodInfo());
-    m_entitymtdinfo.put("restoreNonVolatileEntity", new MethodInfo());
+    m_entitymtdinfo.put("initializeDurableEntity", new MethodInfo());
+    m_entitymtdinfo.put("createDurableEntity", new MethodInfo());
+    m_entitymtdinfo.put("restoreDurableEntity", new MethodInfo());
 
   }
 
@@ -196,7 +196,7 @@ public class AnnotatedDurableEntityClass {
     String methodname;
     long fieldoff = 0;
     TypeElement intf_durable = m_elemutils.getTypeElement(Durable.class.getCanonicalName());
-    TypeElement intf_entity = m_elemutils.getTypeElement(MemoryNonVolatileEntity.class.getCanonicalName());
+    TypeElement intf_entity = m_elemutils.getTypeElement(MemoryDurableEntity.class.getCanonicalName());
     // System.err.printf("<><><><><> %s ======\n", intf_entity.toString());
 
     boolean valid = false;
@@ -251,13 +251,13 @@ public class AnnotatedDurableEntityClass {
       if (elem.getKind() == ElementKind.METHOD) {
         methodname = elem.getSimpleName().toString();
         // System.err.printf("=========== %s ======\n", methodname);
-        NonVolatileGetter pgetter = elem.getAnnotation(NonVolatileGetter.class);
+        DurableGetter pgetter = elem.getAnnotation(DurableGetter.class);
         if (pgetter != null) {
           if (!elem.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AnnotationProcessingException(elem, "%s annotated with NonVolatileGetter is not abstract.",
                 methodname);
           }
-          if (null != elem.getAnnotation(NonVolatileSetter.class)) {
+          if (null != elem.getAnnotation(DurableSetter.class)) {
             throw new AnnotationProcessingException(elem, "%s is annotated with NonVolatileSetter as well.",
                 methodname);
           }
@@ -289,7 +289,7 @@ public class AnnotatedDurableEntityClass {
           m_dynfieldsinfo.put(methodname.substring(3), fieldinfo);
 
         }
-        if (null != elem.getAnnotation(NonVolatileSetter.class)) {
+        if (null != elem.getAnnotation(DurableSetter.class)) {
           if (!elem.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AnnotationProcessingException(elem, "%s annotated with NonVolatileSetter is not abstract.",
                 methodname);
@@ -715,7 +715,7 @@ public class AnnotatedDurableEntityClass {
       arg1 = methodinfo.elem.getParameters().get(1);
       arg2 = methodinfo.elem.getParameters().get(2);
       switch (name) {
-      case "initializeNonVolatileEntity":
+      case "initializeDurableEntity":
         arg3 = methodinfo.elem.getParameters().get(3);
         code.addStatement("$1N = $2L", allocname, arg0);
         code.addStatement("$1N = $2L", factoryproxyname, arg1);
@@ -727,9 +727,9 @@ public class AnnotatedDurableEntityClass {
         code.addStatement("e.printStackTrace()");
         code.endControlFlow();
         break;
-      case "createNonVolatileEntity":
+      case "createDurableEntity":
         arg3 = methodinfo.elem.getParameters().get(3);
-        code.addStatement("initializeNonVolatileEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg3);
+        code.addStatement("initializeDurableEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg3);
         code.addStatement("$1N = $2N.createChunk($3L, $4N)", holdername, allocname, m_holdersize, autoreclaimname);
         code.beginControlFlow("if (null == $1N)", holdername);
         code.addStatement("throw new OutOfPersistentMemory(\"Create Non-Volatile Entity Error!\")");
@@ -748,10 +748,10 @@ public class AnnotatedDurableEntityClass {
         // code.endControlFlow();
         code.addStatement("initializeAfterCreate()");
         break;
-      case "restoreNonVolatileEntity":
+      case "restoreDurableEntity":
         arg3 = methodinfo.elem.getParameters().get(3);
         arg4 = methodinfo.elem.getParameters().get(4);
-        code.addStatement("initializeNonVolatileEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg4);
+        code.addStatement("initializeDurableEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg4);
         code.beginControlFlow("if (0L == $1L)", arg3);
         code.addStatement("throw new RetrieveNonVolatileEntityError(\"Input handler is null on $1N.\")", name);
         code.endControlFlow();
@@ -789,7 +789,7 @@ public class AnnotatedDurableEntityClass {
     ParameterSpec allocparam = ParameterSpec.builder(m_alloctypename, "allocator").build();
     code = CodeBlock.builder().addStatement("return create($1L, false)", allocparam.name).build();
     methodspec = MethodSpec.methodBuilder("create").addTypeVariables(entityspec.typeVariables)
-        .addException(OutOfPersistentMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(OutOfHybridMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addCode(code).build();
     typespecbuilder.addMethod(methodspec);
 
@@ -797,7 +797,7 @@ public class AnnotatedDurableEntityClass {
     code = CodeBlock.builder()
         .addStatement("return create($1L, null, null, $2L)", allocparam.name, autoreclaimparam.name).build();
     methodspec = MethodSpec.methodBuilder("create").addTypeVariables(entityspec.typeVariables)
-        .addException(OutOfPersistentMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(OutOfHybridMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addParameter(autoreclaimparam).addCode(code)
         .build();
     typespecbuilder.addMethod(methodspec);
@@ -806,11 +806,11 @@ public class AnnotatedDurableEntityClass {
     ParameterSpec gfieldsparam = ParameterSpec.builder(m_gfieldstypename, "gfields").build();
     code = CodeBlock.builder().addStatement("$1T entity = new $1T()", entitytn)
         .addStatement("entity.setupGenericInfo($1N, $2N)", factoryproxysparam.name, gfieldsparam.name)
-        .addStatement("entity.createNonVolatileEntity($1L, $2L, $3L, $4L)", allocparam.name, factoryproxysparam.name,
+        .addStatement("entity.createDurableEntity($1L, $2L, $3L, $4L)", allocparam.name, factoryproxysparam.name,
             gfieldsparam.name, autoreclaimparam.name)
         .addStatement("return entity").build();
     methodspec = MethodSpec.methodBuilder("create").addTypeVariables(entityspec.typeVariables)
-        .addException(OutOfPersistentMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(OutOfHybridMemory.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addParameter(factoryproxysparam)
         .addParameter(gfieldsparam).addParameter(autoreclaimparam).addCode(code).build();
     typespecbuilder.addMethod(methodspec);
@@ -819,7 +819,7 @@ public class AnnotatedDurableEntityClass {
     code = CodeBlock.builder().addStatement("return restore($1L, $2L, false)", allocparam.name, phandlerparam.name)
         .build();
     methodspec = MethodSpec.methodBuilder("restore").addTypeVariables(entityspec.typeVariables)
-        .addException(RetrieveNonVolatileEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(RetrieveDurableEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addParameter(phandlerparam).addCode(code)
         .build();
     typespecbuilder.addMethod(methodspec);
@@ -827,18 +827,18 @@ public class AnnotatedDurableEntityClass {
     code = CodeBlock.builder().addStatement("return restore($1L, null, null, $2L, $3L)", allocparam.name,
         phandlerparam.name, autoreclaimparam.name).build();
     methodspec = MethodSpec.methodBuilder("restore").addTypeVariables(entityspec.typeVariables)
-        .addException(RetrieveNonVolatileEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(RetrieveDurableEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addParameter(phandlerparam)
         .addParameter(autoreclaimparam).addCode(code).build();
     typespecbuilder.addMethod(methodspec);
 
     code = CodeBlock.builder().addStatement("$1T entity = new $1T()", entitytn)
         .addStatement("entity.setupGenericInfo($1N, $2N)", factoryproxysparam.name, gfieldsparam.name)
-        .addStatement("entity.restoreNonVolatileEntity($1L, $2L, $3L, $4L, $5L)", allocparam.name,
+        .addStatement("entity.restoreDurableEntity($1L, $2L, $3L, $4L, $5L)", allocparam.name,
             factoryproxysparam.name, gfieldsparam.name, phandlerparam.name, autoreclaimparam.name)
         .addStatement("return entity").build();
     methodspec = MethodSpec.methodBuilder("restore").addTypeVariables(entityspec.typeVariables)
-        .addException(RetrieveNonVolatileEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addException(RetrieveDurableEntityError.class).addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .returns(TypeName.get(m_elem.asType())).addParameter(allocparam).addParameter(factoryproxysparam)
         .addParameter(gfieldsparam).addParameter(phandlerparam).addParameter(autoreclaimparam).addCode(code).build();
     typespecbuilder.addMethod(methodspec);
@@ -850,7 +850,7 @@ public class AnnotatedDurableEntityClass {
 
     TypeSpec.Builder entitybuilder = TypeSpec.classBuilder(m_entityname).superclass(TypeName.get(m_elem.asType()))
         .addModifiers(Modifier.PUBLIC).addAnnotation(classannotation)
-        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(MemoryNonVolatileEntity.class), m_alloctypevarname))
+        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(MemoryDurableEntity.class), m_alloctypevarname))
         .addTypeVariable(m_alloctypevarname);
 
     for (TypeParameterElement tpe : m_elem.getTypeParameters()) {

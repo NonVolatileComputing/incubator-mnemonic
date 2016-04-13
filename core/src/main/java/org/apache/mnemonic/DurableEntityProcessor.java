@@ -66,7 +66,7 @@ public class DurableEntityProcessor extends AbstractProcessor {
   @Override
   public Set<String> getSupportedAnnotationTypes() {
     Set<String> annotataions = new LinkedHashSet<String>();
-    annotataions.add(NonVolatileEntity.class.getCanonicalName());
+    annotataions.add(DurableEntity.class.getCanonicalName());
     return annotataions;
   }
 
@@ -112,7 +112,7 @@ public class DurableEntityProcessor extends AbstractProcessor {
 
     try {
 
-      for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(NonVolatileEntity.class)) {
+      for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(DurableEntity.class)) {
 
         String outputstr = String.format("++++++++++%s+++++++++++", annotatedElement.getSimpleName());
         note(annotatedElement, outputstr);
@@ -120,7 +120,7 @@ public class DurableEntityProcessor extends AbstractProcessor {
 
         if (annotatedElement.getKind() != ElementKind.CLASS) {
           throw new AnnotationProcessingException(annotatedElement, "Only classes can be annotated with @%s",
-              NonVolatileEntity.class.getSimpleName());
+              DurableEntity.class.getSimpleName());
         }
 
         // We can cast it, because we know that it of ElementKind.CLASS

@@ -22,11 +22,11 @@ package org.apache.mnemonic;
  *
  */
 
-public class OutOfPersistentMemory extends RuntimeException {
+public class OutOfHybridMemory extends RuntimeException {
 
   private static final long serialVersionUID = -6315943783592441148L;
 
-  public OutOfPersistentMemory(String s) {
+  public OutOfHybridMemory(String s) {
     super(s);
   }
 }
