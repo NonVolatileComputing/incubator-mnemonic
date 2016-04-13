@@ -29,7 +29,8 @@ import org.flowcomputing.commons.resgc.ResReclaim;
  * 
  *
  */
-public class NonVolatileMemAllocator extends CommonDurableAllocator<NonVolatileMemAllocator> implements NVMAddressTranslator {
+public class NonVolatileMemAllocator extends CommonDurableAllocator<NonVolatileMemAllocator>
+    implements NVMAddressTranslator {
 
   private boolean m_activegc = true;
   private long m_gctimeout = 100;
@@ -89,19 +90,20 @@ public class NonVolatileMemAllocator extends CommonDurableAllocator<NonVolatileM
      * create a resource collector to release specified bytebuffer that backed
      * by underlying big memory pool.
      */
-    m_bufcollector = new ResCollector<MemBufferHolder<NonVolatileMemAllocator>, ByteBuffer>(new ResReclaim<ByteBuffer>() {
-      @Override
-      public void reclaim(ByteBuffer mres) {
-        boolean cb_reclaimed = false;
-        if (null != m_bufferreclaimer) {
-          cb_reclaimed = m_bufferreclaimer.reclaim(mres, Long.valueOf(mres.capacity()));
-        }
-        if (!cb_reclaimed) {
-          m_nvmasvc.destroyByteBuffer(m_nid, mres);
-          mres = null;
-        }
-      }
-    });
+    m_bufcollector = new ResCollector<MemBufferHolder<NonVolatileMemAllocator>, ByteBuffer>(
+        new ResReclaim<ByteBuffer>() {
+          @Override
+          public void reclaim(ByteBuffer mres) {
+            boolean cb_reclaimed = false;
+            if (null != m_bufferreclaimer) {
+              cb_reclaimed = m_bufferreclaimer.reclaim(mres, Long.valueOf(mres.capacity()));
+            }
+            if (!cb_reclaimed) {
+              m_nvmasvc.destroyByteBuffer(m_nid, mres);
+              mres = null;
+            }
+          }
+        });
   }
 
   /**
@@ -159,7 +161,8 @@ public class NonVolatileMemAllocator extends CommonDurableAllocator<NonVolatileM
    * @return the resized memory chunk handler
    */
   @Override
-  public MemChunkHolder<NonVolatileMemAllocator> resizeChunk(MemChunkHolder<NonVolatileMemAllocator> mholder, long size) {
+  public MemChunkHolder<NonVolatileMemAllocator> resizeChunk(MemChunkHolder<NonVolatileMemAllocator> mholder,
+      long size) {
     MemChunkHolder<NonVolatileMemAllocator> ret = null;
     boolean ac = null != mholder.getRefId();
     if (size > 0) {
@@ -193,7 +196,8 @@ public class NonVolatileMemAllocator extends CommonDurableAllocator<NonVolatileM
    *
    */
   @Override
-  public MemBufferHolder<NonVolatileMemAllocator> resizeBuffer(MemBufferHolder<NonVolatileMemAllocator> mholder, long size) {
+  public MemBufferHolder<NonVolatileMemAllocator> resizeBuffer(MemBufferHolder<NonVolatileMemAllocator> mholder,
+      long size) {
     MemBufferHolder<NonVolatileMemAllocator> ret = null;
     boolean ac = null != mholder.getRefId();
     if (size > 0) {
