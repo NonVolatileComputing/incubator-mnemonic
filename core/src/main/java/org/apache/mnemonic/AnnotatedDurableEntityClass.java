@@ -490,7 +490,7 @@ public class AnnotatedDurableEntityClass {
           code.beginControlFlow("if (0L != phandler)");
           code.addStatement("$1N = $2N.retrieveBuffer(phandler, $3N)", dynfieldinfo.name, allocname, autoreclaimname);
           code.beginControlFlow("if (null == $1N)", dynfieldinfo.name);
-          code.addStatement("throw new RetrieveNonVolatileEntityError(\"Retrieve String Buffer Failure.\")");
+          code.addStatement("throw new RetrieveDurableEntityError(\"Retrieve String Buffer Failure.\")");
           code.endControlFlow();
           code.endControlFlow();
           code.endControlFlow();
@@ -506,7 +506,7 @@ public class AnnotatedDurableEntityClass {
           code.beginControlFlow("if (null != $1N && $1N.length > gfpidx)", genericfieldname);
           code.addStatement("gftype = $1L[gfpidx]", genericfieldname);
           code.nextControlFlow("else");
-          code.addStatement("throw new RetrieveNonVolatileEntityError(\"No Generic Field Type Info.\")");
+          code.addStatement("throw new RetrieveDurableEntityError(\"No Generic Field Type Info.\")");
           code.endControlFlow();
           code.addStatement("$1N = new $2T(proxy, gftype, $8L, $9L, $3N, $4N, $5N, $6N.get() + $7L)", dynfieldinfo.name,
               dynfieldinfo.type, allocname, unsafename, autoreclaimname, holdername, dynfieldinfo.fieldoff,
@@ -592,7 +592,7 @@ public class AnnotatedDurableEntityClass {
           code.addStatement("$1N = $2N.createBuffer($3L.length() * 2, $4N)", dynfieldinfo.name, allocname, arg0,
               autoreclaimname);
           code.beginControlFlow("if (null == $1N)", dynfieldinfo.name);
-          code.addStatement("throw new OutOfPersistentMemory(\"Create Non-Volatile String Error!\")");
+          code.addStatement("throw new OutOfHybridMemory(\"Create Non-Volatile String Error!\")");
           code.endControlFlow();
           code.addStatement("$1N.get().asCharBuffer().put($2L)", dynfieldinfo.name, arg0);
           code.addStatement("$1N.putLong($2N.get() + $3L, $4N.getBufferHandler($5N))", unsafename, holdername,
@@ -609,7 +609,7 @@ public class AnnotatedDurableEntityClass {
           code.beginControlFlow("if (null != $1N && $1N.length > gfpidx)", genericfieldname);
           code.addStatement("gftype = $1L[gfpidx]", genericfieldname);
           code.nextControlFlow("else");
-          code.addStatement("throw new RetrieveNonVolatileEntityError(\"No Generic Field Type Info.\")");
+          code.addStatement("throw new RetrieveDurableEntityError(\"No Generic Field Type Info.\")");
           code.endControlFlow();
           code.addStatement("$1N = new $2T(proxy, gftype, $8L, $9L, $3N, $4N, $5N, $6N.get() + $7L)", dynfieldinfo.name,
               dynfieldinfo.type, allocname, unsafename, autoreclaimname, holdername, dynfieldinfo.fieldoff,
@@ -618,7 +618,7 @@ public class AnnotatedDurableEntityClass {
           code.beginControlFlow("if (null != $1L)", dynfieldinfo.name);
           code.addStatement("$1N.set($2L, $3L)", dynfieldinfo.name, arg0, arg1);
           code.nextControlFlow("else");
-          code.addStatement("throw new RetrieveNonVolatileEntityError(\"GenericField is null!\")");
+          code.addStatement("throw new RetrieveDurableEntityError(\"GenericField is null!\")");
           code.endControlFlow();
         } else {
           code.beginControlFlow("if ($1L && null != $2L())", arg1, gsetterName(name, true));
@@ -732,7 +732,7 @@ public class AnnotatedDurableEntityClass {
         code.addStatement("initializeDurableEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg3);
         code.addStatement("$1N = $2N.createChunk($3L, $4N)", holdername, allocname, m_holdersize, autoreclaimname);
         code.beginControlFlow("if (null == $1N)", holdername);
-        code.addStatement("throw new OutOfPersistentMemory(\"Create Non-Volatile Entity Error!\")");
+        code.addStatement("throw new OutOfHybridMemory(\"Create Non-Volatile Entity Error!\")");
         code.endControlFlow();
         // code.beginControlFlow("try");
         // for (String fname : m_dynfieldsinfo.keySet()) {
@@ -744,7 +744,7 @@ public class AnnotatedDurableEntityClass {
         // code.addStatement("$1N(null, false)", gsetterName(fname, false));
         // }
         // }
-        // code.nextControlFlow("catch(RetrieveNonVolatileEntityError ex)");
+        // code.nextControlFlow("catch(RetrieveDurableEntityError ex)");
         // code.endControlFlow();
         code.addStatement("initializeAfterCreate()");
         break;
@@ -753,11 +753,11 @@ public class AnnotatedDurableEntityClass {
         arg4 = methodinfo.elem.getParameters().get(4);
         code.addStatement("initializeDurableEntity($1L, $2L, $3L, $4L)", arg0, arg1, arg2, arg4);
         code.beginControlFlow("if (0L == $1L)", arg3);
-        code.addStatement("throw new RetrieveNonVolatileEntityError(\"Input handler is null on $1N.\")", name);
+        code.addStatement("throw new RetrieveDurableEntityError(\"Input handler is null on $1N.\")", name);
         code.endControlFlow();
         code.addStatement("$1N = $2N.retrieveChunk($3L, $4N)", holdername, allocname, arg3, autoreclaimname);
         code.beginControlFlow("if (null == $1N)", holdername);
-        code.addStatement("throw new RetrieveNonVolatileEntityError(\"Retrieve Entity Failure!\")");
+        code.addStatement("throw new RetrieveDurableEntityError(\"Retrieve Entity Failure!\")");
         code.endControlFlow();
         code.addStatement("initializeAfterRestore()");
         break;
