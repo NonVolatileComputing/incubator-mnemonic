@@ -40,7 +40,7 @@ import javax.lang.model.util.Types;
 
 import javax.tools.Diagnostic;
 
-public class NonVolatileEntityProcessor extends AbstractProcessor {
+public class DurableEntityProcessor extends AbstractProcessor {
   private Types typeUtils;
   private Elements elementUtils;
   private Filer filer;
@@ -126,7 +126,7 @@ public class NonVolatileEntityProcessor extends AbstractProcessor {
         // We can cast it, because we know that it of ElementKind.CLASS
         TypeElement typeelem = (TypeElement) annotatedElement;
 
-        AnnotatedNonVolatileEntityClass annotatedClass = new AnnotatedNonVolatileEntityClass(typeelem, typeUtils,
+        AnnotatedDurableEntityClass annotatedClass = new AnnotatedDurableEntityClass(typeelem, typeUtils,
             elementUtils, messager);
 
         annotatedClass.prepareProcessing();

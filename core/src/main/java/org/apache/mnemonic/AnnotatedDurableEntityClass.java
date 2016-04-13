@@ -63,7 +63,7 @@ import sun.misc.Unsafe;
  *
  */
 @SuppressWarnings("restriction")
-public class AnnotatedNonVolatileEntityClass {
+public class AnnotatedDurableEntityClass {
   protected class MethodInfo {
     public ExecutableElement elem;
     public MethodSpec.Builder specbuilder;
@@ -166,7 +166,7 @@ public class AnnotatedNonVolatileEntityClass {
     return n;
   }
 
-  public AnnotatedNonVolatileEntityClass(TypeElement classElement, Types typeUtils, Elements elementUtils,
+  public AnnotatedDurableEntityClass(TypeElement classElement, Types typeUtils, Elements elementUtils,
       Messager messager) {
     m_elem = classElement;
     m_typeutils = typeUtils;
