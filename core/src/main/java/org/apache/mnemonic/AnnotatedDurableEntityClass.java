@@ -627,7 +627,7 @@ public class AnnotatedDurableEntityClass {
           code.addStatement("$1N.putAddress($2N.get() + $3L, 0L)", unsafename, holdername, dynfieldinfo.fieldoff);
           code.endControlFlow();
           code.addStatement("$1N = $2L", dynfieldinfo.name, arg0);
-          code.addStatement("$1N.putLong($2N.get() + $3L, null == $4N ? 0L : $4N.getNonVolatileHandler())", unsafename,
+          code.addStatement("$1N.putLong($2N.get() + $3L, null == $4N ? 0L : $4N.getHandler())", unsafename,
               holdername, dynfieldinfo.fieldoff, dynfieldinfo.name);
         }
       }
@@ -670,7 +670,7 @@ public class AnnotatedDurableEntityClass {
         }
         code.addStatement("$1N = true", autoreclaimname);
         break;
-      case "getNonVolatileHandler":
+      case "getHandler":
         code.addStatement("return $1N.getChunkHandler($2N)", allocname, holdername);
         break;
       case "autoReclaim":

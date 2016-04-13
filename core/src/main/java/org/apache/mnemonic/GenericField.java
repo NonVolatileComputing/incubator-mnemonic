@@ -263,7 +263,7 @@ public class GenericField<A extends CommonPersistAllocator<A>, E> implements Dur
    */
   @Override
   public long getHandler() {
-    throw new UnsupportedOperationException("GenericField.getNonVolatileHandler()");
+    throw new UnsupportedOperationException("GenericField.getHandler()");
   }
 
   /**
