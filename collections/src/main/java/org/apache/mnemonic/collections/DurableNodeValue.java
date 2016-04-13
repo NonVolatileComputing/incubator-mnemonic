@@ -33,7 +33,7 @@ import org.apache.mnemonic.DurableSetter;
  *
  */
 @DurableEntity
-public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
+public abstract class DurableNodeValue<E> implements Durable, Iterable<E> {
   protected transient EntityFactoryProxy[] m_node_efproxies;
   protected transient GenericField.GType[] m_node_gftypes;
 
@@ -100,7 +100,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    *
    */
   @DurableGetter(Id = 2L, EntityFactoryProxies = "m_node_efproxies", GenericFieldTypes = "m_node_gftypes")
-  public abstract NonVolatileNodeValue<E> getNext();
+  public abstract DurableNodeValue<E> getNext();
 
   /**
    * set next node
@@ -112,7 +112,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    *          true if want to destroy the exist node
    */
   @DurableSetter
-  public abstract void setNext(NonVolatileNodeValue<E> next, boolean destroy);
+  public abstract void setNext(DurableNodeValue<E> next, boolean destroy);
 
   /**
    * get an iterator instance of this list
@@ -130,7 +130,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
    */
   private class Intr implements Iterator<E> {
 
-    protected NonVolatileNodeValue<E> next = null;
+    protected DurableNodeValue<E> next = null;
 
     /**
      * Constructor
@@ -139,7 +139,7 @@ public abstract class NonVolatileNodeValue<E> implements Durable, Iterable<E> {
      *          the start point for this iterator
      *
      */
-    Intr(NonVolatileNodeValue<E> head) {
+    Intr(DurableNodeValue<E> head) {
       next = head;
     }
 

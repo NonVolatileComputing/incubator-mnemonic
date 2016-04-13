@@ -28,7 +28,7 @@ import java.util.UUID;
 
 import org.testng.annotations.Test;
 
-public class NonVolatilePersonNGTest {
+public class DurablePersonNGTest {
   private long cKEYCAPACITY;
 
   @Test(expectedExceptions = { OutOfHybridMemory.class })

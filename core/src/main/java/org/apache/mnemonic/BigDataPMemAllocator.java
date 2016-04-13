@@ -29,7 +29,7 @@ import org.flowcomputing.commons.resgc.ResReclaim;
  * 
  *
  */
-public class BigDataPMemAllocator extends CommonPersistAllocator<BigDataPMemAllocator> implements PMAddressTranslator {
+public class BigDataPMemAllocator extends CommonDurableAllocator<BigDataPMemAllocator> implements PMAddressTranslator {
 
   private boolean m_activegc = true;
   private long m_gctimeout = 100;
@@ -360,7 +360,7 @@ public class BigDataPMemAllocator extends CommonPersistAllocator<BigDataPMemAllo
    * @return true if there is
    */
   @Override
-  public boolean hasNonVolatileHandlerStore() {
+  public boolean hasDurableHandlerStore() {
     return true;
   }
 

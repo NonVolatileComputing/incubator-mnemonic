@@ -32,7 +32,7 @@ import java.util.UUID;
  *
  */
 
-public class NonVolatilePersonNGTest {
+public class DurablePersonNGTest {
   private long cKEYCAPACITY;
 
   @Test(expectedExceptions = { OutOfHybridMemory.class })

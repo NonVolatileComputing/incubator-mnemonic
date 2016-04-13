@@ -105,7 +105,7 @@ public class AnnotatedDurableEntityClass {
   private TypeName m_factoryproxystypename = TypeName.get(EntityFactoryProxy[].class);
   private TypeName m_gfieldstypename = TypeName.get(GenericField.GType[].class);
   private TypeVariableName m_alloctypevarname = TypeVariableName.get(cALLOCTYPENAME,
-      ParameterizedTypeName.get(ClassName.get(CommonPersistAllocator.class), TypeVariableName.get(cALLOCTYPENAME)));
+      ParameterizedTypeName.get(ClassName.get(CommonDurableAllocator.class), TypeVariableName.get(cALLOCTYPENAME)));
 
   private Map<String, MethodInfo> m_gettersinfo = new HashMap<String, MethodInfo>();
   private Map<String, MethodInfo> m_settersinfo = new HashMap<String, MethodInfo>();
@@ -254,11 +254,11 @@ public class AnnotatedDurableEntityClass {
         DurableGetter pgetter = elem.getAnnotation(DurableGetter.class);
         if (pgetter != null) {
           if (!elem.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AnnotationProcessingException(elem, "%s annotated with NonVolatileGetter is not abstract.",
+            throw new AnnotationProcessingException(elem, "%s annotated with DurableGetter is not abstract.",
                 methodname);
           }
           if (null != elem.getAnnotation(DurableSetter.class)) {
-            throw new AnnotationProcessingException(elem, "%s is annotated with NonVolatileSetter as well.",
+            throw new AnnotationProcessingException(elem, "%s is annotated with DurableSetter as well.",
                 methodname);
           }
           if (!methodname.startsWith("get")) {
@@ -291,7 +291,7 @@ public class AnnotatedDurableEntityClass {
         }
         if (null != elem.getAnnotation(DurableSetter.class)) {
           if (!elem.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AnnotationProcessingException(elem, "%s annotated with NonVolatileSetter is not abstract.",
+            throw new AnnotationProcessingException(elem, "%s annotated with DurableSetter is not abstract.",
                 methodname);
           }
           if (!methodname.startsWith("set")) {

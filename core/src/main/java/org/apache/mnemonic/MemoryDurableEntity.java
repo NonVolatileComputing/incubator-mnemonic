@@ -22,7 +22,7 @@ package org.apache.mnemonic;
  *
  */
 
-public interface MemoryDurableEntity<ALLOC_PMem3C93D24F59 extends CommonPersistAllocator<ALLOC_PMem3C93D24F59>> {
+public interface MemoryDurableEntity<ALLOC_PMem3C93D24F59 extends CommonDurableAllocator<ALLOC_PMem3C93D24F59>> {
 
   void initializeDurableEntity(ALLOC_PMem3C93D24F59 allocator, EntityFactoryProxy[] efproxys,
       GenericField.GType[] gfields, boolean autoreclaim);
