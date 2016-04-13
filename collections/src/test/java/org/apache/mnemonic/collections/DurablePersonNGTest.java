@@ -17,7 +17,7 @@
 
 package org.apache.mnemonic.collections;
 
-import org.apache.mnemonic.BigDataPMemAllocator;
+import org.apache.mnemonic.NonVolatileMemAllocator;
 import org.apache.mnemonic.OutOfHybridMemory;
 import org.apache.mnemonic.Reclaim;
 import org.apache.mnemonic.RetrieveDurableEntityError;
@@ -38,7 +38,7 @@ public class DurablePersonNGTest {
   @Test(expectedExceptions = { OutOfHybridMemory.class })
   public void testGenPeople() throws OutOfHybridMemory, RetrieveDurableEntityError {
     Random rand = Utils.createRandom();
-    BigDataPMemAllocator act = new BigDataPMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"),
+    NonVolatileMemAllocator act = new NonVolatileMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"),
         1024 * 1024 * 8, "./pobj_person.dat", true);
     cKEYCAPACITY = act.handlerCapacity();
     act.setBufferReclaimer(new Reclaim<ByteBuffer>() {
@@ -110,7 +110,7 @@ public class DurablePersonNGTest {
 
   @Test(dependsOnMethods = { "testGenPeople" })
   public void testCheckPeople() throws RetrieveDurableEntityError {
-    BigDataPMemAllocator act = new BigDataPMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"),
+    NonVolatileMemAllocator act = new NonVolatileMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"),
         1024 * 1024 * 8, "./pobj_person.dat", true);
     act.setBufferReclaimer(new Reclaim<ByteBuffer>() {
       @Override

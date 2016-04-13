@@ -21,7 +21,7 @@ package org.apache.mnemonic;
  * translate persistent memory address for allocator
  *
  */
-public interface PMAddressTranslator {
+public interface NVMAddressTranslator {
 
   /**
    * calculate the portable address

@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.mnemonic.BigDataPMemAllocator;
+import org.apache.mnemonic.NonVolatileMemAllocator;
 import org.apache.mnemonic.CommonDurableAllocator;
 import org.apache.mnemonic.Durable;
 import org.apache.mnemonic.EntityFactoryProxy;
@@ -44,12 +44,12 @@ import org.testng.annotations.Test;
 public class DurableNodeValueNGTest {
   private long cKEYCAPACITY;
   private Random m_rand;
-  private BigDataPMemAllocator m_act;
+  private NonVolatileMemAllocator m_act;
 
   @BeforeClass
   public void setUp() {
     m_rand = Utils.createRandom();
-    m_act = new BigDataPMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"), 1024 * 1024 * 1024,
+    m_act = new NonVolatileMemAllocator(Utils.getNonVolatileMemoryAllocatorService("pmalloc"), 1024 * 1024 * 1024,
         "./pobj_NodeValue.dat", true);
     cKEYCAPACITY = m_act.handlerCapacity();
     m_act.setBufferReclaimer(new Reclaim<ByteBuffer>() {
