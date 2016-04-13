@@ -23,9 +23,9 @@ import java.util.NoSuchElementException;
 import org.apache.mnemonic.Durable;
 import org.apache.mnemonic.EntityFactoryProxy;
 import org.apache.mnemonic.GenericField;
-import org.apache.mnemonic.NonVolatileEntity;
-import org.apache.mnemonic.NonVolatileGetter;
-import org.apache.mnemonic.NonVolatileSetter;
+import org.apache.mnemonic.DurableEntity;
+import org.apache.mnemonic.DurableGetter;
+import org.apache.mnemonic.DurableSetter;
 
 /**
  * this class defines a non-volatile node for a generic value to form a
