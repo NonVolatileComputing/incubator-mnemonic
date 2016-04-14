@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
 import java.util.Random;
 
 /**
- * test the functionality of BigMemAllocator class.
+ * test the functionality of VolatileMemAllocator class.
  * 
  */
 public class VolatileAllocatorNGTest {
