@@ -16,6 +16,7 @@ This library comes up with a new programming model we call it non-volatile objec
 * Reduce GC Overheads as the following chart shown (collected from Apache Spark experiments)
 * [Coming major feature]: Distributed Object Graphs (DOG)
 * [Coming major feature]: Columnar-aware object graphs & collections (Apache Arrow based optimization)
+* [Coming major feature]: Native Massive Object Graph (NMOG) Computing
 
 ![Mnemonic_GC_stats](http://nonvolatilecomputing.github.io/Mnemonic/images/mnemonic_GC_stats.png)
 
@@ -107,7 +108,7 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
 ##### Setup an allocator for non-volatile object graphs.
 ```java
         // create an allocator instance
-        BigDataPMemAllocator act = new BigDataPMemAllocator(1024 * 1024 * 8, "./pobj_person.dat", true);
+        NonVolatileMemAllocator act = new NonVolatileMemAllocator(1024 * 1024 * 8, "./pobj_person.dat", true);
         
         // fetch handler store capacity from this non-volatile storage managed by this allocator
         KEYCAPACITY = act.handlerCapacity();
@@ -221,7 +222,7 @@ To run several test cases:
   
   $ mvn -Dtest=DurablePersonNGTest test -pl core -DskipTests=false # a testcase for module "core" that requires 'pmalloc' allocator service to pass
   
-  $ mvn -Dtest=BigDataMemAllocatorNGTest test -pl core -DskipTests=false # the second testcase for module "core" that requires 'vmem' allocator service to pass
+  $ mvn -Dtest=NonVolatileMemAllocatorNGTest test -pl core -DskipTests=false # the second testcase for module "core" that requires 'vmem' allocator service to pass
   
   $ mvn -Dtest=MemClusteringNGTest test -pl core -DskipTests=false # the third testcase for module "core" that requires 'vmem allocator service to pass
   
