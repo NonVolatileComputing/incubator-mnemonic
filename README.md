@@ -33,14 +33,14 @@ This library comes up with a new programming model we call it non-volatile objec
 
 ```java
 /**
- * a non-volatile class should be abstract, implement Durable interface and marked with @NonVolatileEntity annotation
+ * a durable class should be abstract, implement Durable interface and marked with @DurableEntity annotation
  */
-@NonVolatileEntity
+@DurableEntity
 public abstract class Person<E> implements Durable, Comparable<Person<E>> {
         E element; // Generic Type
 
         /**
-         * callback for this non-volatile object creation
+         * callback for this durable object creation
          */
         @Override
         public void initializeAfterCreate() { 
@@ -48,7 +48,7 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
         }
         
         /**
-         * callback for this non-valatile object recovery
+         * callback for this durable object recovery
          */
         @Override
         public void initializeAfterRestore() { 
@@ -64,7 +64,7 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
         }
 
         @Test
-        public void testOutput() throws RetrieveNonVolatileEntityError {
+        public void testOutput() throws RetrieveDurableEntityError {
                 System.out.printf("Person %s, Age: %d ( %s ) \n", getName(), getAge(),
                                 null == getMother()? "No Recorded Mother" : "Has Recorded Mother");
         }
@@ -77,27 +77,27 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
         }
 
         /**
-         * Getters and Setters for non-volatile fields marked with @NonVolatileGetter and @NonVolatileSetter
+         * Getters and Setters for non-volatile fields marked with @DurableGetter and @DurableSetter
          */
-        @NonVolatileGetter
+        @DurableGetter
         abstract public Short getAge();
-        @NonVolatileSetter
+        @DurableSetter
         abstract public void setAge(Short age);
 
-        @NonVolatileGetter
-        abstract public String getName() throws RetrieveNonVolatileEntityError;
-        @NonVolatileSetter
-        abstract public void setName(String name, boolean destroy) throws OutOfPersistentMemory, RetrieveNonVolatileEntityError;
+        @DurableGetter
+        abstract public String getName() throws RetrieveDurableEntityError;
+        @DurableSetter
+        abstract public void setName(String name, boolean destroy) throws OutOfPersistentMemory, RetrieveDurableEntityError;
 
-        @NonVolatileGetter
-        abstract public Person<E> getMother() throws RetrieveNonVolatileEntityError;
-        @NonVolatileSetter
-        abstract public void setMother(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
+        @DurableGetter
+        abstract public Person<E> getMother() throws RetrieveDurableEntityError;
+        @DurableSetter
+        abstract public void setMother(Person<E> mother, boolean destroy) throws RetrieveDurableEntityError;
 
-        @NonVolatileGetter
-        abstract public Person<E> getFather() throws RetrieveNonVolatileEntityError;
-        @NonVolatileSetter
-        abstract public void setFather(Person<E> mother, boolean destroy) throws RetrieveNonVolatileEntityError;
+        @DurableGetter
+        abstract public Person<E> getFather() throws RetrieveDurableEntityError;
+        @DurableSetter
+        abstract public void setFather(Person<E> mother, boolean destroy) throws RetrieveDurableEntityError;
 }
 
 ```
@@ -126,7 +126,7 @@ public abstract class Person<E> implements Durable, Comparable<Person<E>> {
         person.setName(String.format("Name: [%s]", UUID.randomUUID().toString()), true);
 
         // keep this person on non-volatile handler store
-        act.setHandler(keyidx, person.getNonVolatileHandler());
+        act.setHandler(keyidx, person.getHandler());
 
         for (int deep = 0; deep < rand.nextInt(100); ++deep) {
         
@@ -219,15 +219,15 @@ To run an example:
 To run several test cases:
 ```bash
   
-  $ mvn -Dtest=NonVolatilePersonNGTest test -pl core -DskipTests=false # a testcase for module "core" that requires 'pmalloc' allocator service to pass
+  $ mvn -Dtest=DurablePersonNGTest test -pl core -DskipTests=false # a testcase for module "core" that requires 'pmalloc' allocator service to pass
   
   $ mvn -Dtest=BigDataMemAllocatorNGTest test -pl core -DskipTests=false # the second testcase for module "core" that requires 'vmem' allocator service to pass
   
   $ mvn -Dtest=MemClusteringNGTest test -pl core -DskipTests=false # the third testcase for module "core" that requires 'vmem allocator service to pass
   
-  $ mvn -Dtest=NonVolatileNodeValueNGTest  test -pl collections -DskipTests=false # a testcase for module "collection" that requires 'pmalloc' allocator service to pass
+  $ mvn -Dtest=DurableNodeValueNGTest  test -pl collections -DskipTests=false # a testcase for module "collection" that requires 'pmalloc' allocator service to pass
   
-  $ mvn -Dtest=NonVolatilePersonNGTest  test -pl collections -DskipTests=false # another testcase for module "collection" that requires 'pmalloc' allocator service to pass
+  $ mvn -Dtest=DurablePersonNGTest  test -pl collections -DskipTests=false # another testcase for module "collection" that requires 'pmalloc' allocator service to pass
 ```
 
 ### Where is the document ?
